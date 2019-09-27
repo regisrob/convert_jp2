@@ -23,7 +23,7 @@ Pour plus de détails sur l'encodage en JPEG2000, lire la documentation de la li
 
 ### Dépendances
 
-Ce script a été testé avec Python 3 (3.7.3).
+Ce script a été testé avec Python 3.
 
 Il repose sur la librairie Image-processing : https://github.com/bodleian/image-processing
 
@@ -39,27 +39,51 @@ Les autres dépendances sont aussi celles de Image-processing :
 
 Voir le détail des dépendances de Image-processing : https://image-processing.readthedocs.io/en/latest/introduction.html#installation
 
-### Procédure
+### Procédure (pour Debian)
 
-**TODO :** 
-* installer python 3 dans un virtualenv
-* gérer le PYTHONPATH dans le script ?
+#### Installation des dépendances
 
 ```
+$ apt install exiftool liblcms2-2 liblcms2-dev libjpeg62-turbo libjpeg62-turbo-dev libtiff5 libtiff5-dev
+```
+
+##### Compilation/installation des librairies d'images
+
+- OpenJPEG : https://github.com/uclouvain/openjpeg/blob/master/INSTALL.md
+- Kakadu : cf. documentation
+
+#### Mise en place du virtualenv
+
+```
+$ python3 --version
 $ which python3
-$ mkvirtualenv --python=/usr/local/bin/python3 {VirtualEnvName}
-$ source activate {VirtualEnvName} ?
-$ git clone https://regisrob@bitbucket.org/regisrob/convert_jp2.git
+$ apt install python3-pip
+$ pip3 install virtualenvwrapper
 
-// Before pip install :
-apt install exiftool
-apt install lcms2 lcms2-devel libtiff libtiff-devel libjpeg libjpeg-devel
-// + compilation OpenJPEG
-// + compilation Kakadu
+$ nano ~/.bash_profile
+---
+# virtualenv
+export WORKON_HOME=$HOME/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+source /usr/local/bin/virtualenvwrapper.sh
+---
 
-$ cd convert_jp2
-$ pip install -r requirements.txt
+$ source ~/.bash_profile
+
+$ mkvirtualenv --python=/usr/bin/python3 {VirtualEnvName}
+$ source activate {VirtualEnvName}
 ```
+
+#### Installation du script convert_jp2
+
+```
+$ git clone https://github.com/regisrob/convert_jp2.git
+$ cd convert_jp2
+$ pip3 install -r requirements.txt
+$ python convert.py -h
+
+```
+
 
 ### Usage
 
