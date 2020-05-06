@@ -56,6 +56,8 @@ class Jp2Converter(object):
 			elif self.encoder == 'kdu':
 				kdu = kakadu.Kakadu(kakadu_base_path=self.bin_path)
 				kdu.kdu_compress(input_file, output_file, kakadu_options=kakadu.DEFAULT_LOSSLESS_COMPRESS_OPTIONS)
+				#opts = kakadu.DEFAULT_COMPRESS_OPTIONS + kakadu.LOSSY_OPTIONS
+				#kdu.kdu_compress(input_file, output_file, kakadu_options=opts)
 
 			if self.validate_jp2:
 				if not self.__is_valid_jp2(output_file):
@@ -70,7 +72,7 @@ class Jp2Converter(object):
 
 	def __report_msg(self, total, invalids):
 		print('-----------------------')
-		print('# {0} images have been converted to JP2'.format(total))
+		print('# {0} images have been converted successfully to JP2'.format(total))
 		if len(invalids):
 			print('# These images are not valid JP2:')
 			print('\n'.join(invalids))
@@ -79,7 +81,7 @@ class Jp2Converter(object):
 		""" derived from image_processing.conversion.validate_jp2 """
 		logger = logging.getLogger(__name__)
 		jp2_element = checkOneFile(image_path)
-		success = jp2_element.findtext('isValidJP2') == 'True'
+		success = jp2_element.findtext('isValidJP2') == 'True' or jp2_element.findtext('isValid') == 'True'
 		output_string = minidom.parseString(ElementTree.tostring(jp2_element)).toprettyxml(encoding='utf-8')
 		if output_file:
 			with open(output_file, 'wb') as f:
